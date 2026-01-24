@@ -1,0 +1,25 @@
+node_modules/
+
+# env files
+.env
+.env.*
+!.env.example
+
+# build outputs
+dist/
+.next/
+out/
+coverage/
+
+# runtime uploads
+backend/uploads/
+
+# logs
+*.log
+
+# misc
+.DS_Store
+Thumbs.db
+
+# typescript
+*.tsbuildinfo
