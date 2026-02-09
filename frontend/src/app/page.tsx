@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "../components/Button";
 import { Container } from "../components/Container";
 import { ProductCard } from "../components/ProductCard";
@@ -74,6 +74,38 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const { t } = useI18n();
   const { settings } = useSettings();
+  const heroText = useMemo(() => {
+    const fallbackTitle = t("home.heroTitle");
+    const [first, ...rest] = fallbackTitle.split(" ");
+    return {
+      headline1: settings?.heroHeadline || first || fallbackTitle,
+      headline2: settings?.heroHeadline2 || rest.join(" "),
+      subtitle: settings?.heroSubtitle || t("home.heroSubtitle"),
+    };
+  }, [settings?.heroHeadline, settings?.heroHeadline2, settings?.heroSubtitle, t]);
+  const features = useMemo(
+    () => [
+      {
+        icon: <TruckIcon />,
+        title: t("home.features.fastDelivery.title"),
+        desc: t("home.features.fastDelivery.desc"),
+        color: "bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400",
+      },
+      {
+        icon: <ShieldCheckIcon />,
+        title: t("home.features.cod.title"),
+        desc: t("home.features.cod.desc"),
+        color: "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400",
+      },
+      {
+        icon: <HeadsetIcon />,
+        title: t("home.features.support.title"),
+        desc: t("home.features.support.desc"),
+        color: "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400",
+      },
+    ],
+    [t]
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -106,14 +138,14 @@ export default function Home() {
             <div className="w-full max-w-4xl rounded-3xl border border-white/10 bg-white/10 p-8 text-center shadow-[0_30px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/[0.06] md:p-12">
               <h1 className="text-4xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-6xl">
                 <span className="block" style={{ color: "var(--hero-headline-1)" }}>
-                  {settings?.heroHeadline || t("home.heroTitle").split(" ")[0]}
+                  {heroText.headline1}
                 </span>
                 <span style={{ color: "var(--hero-headline-2)" }}>
-                  {settings?.heroHeadline2 || t("home.heroTitle").split(" ").slice(1).join(" ")}
+                  {heroText.headline2}
                 </span>
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-zinc-700 dark:text-zinc-200 sm:text-xl">
-                {settings?.heroSubtitle || t("home.heroSubtitle")}
+                {heroText.subtitle}
               </p>
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-x-6">
                 <Link href="/products" className="w-full sm:w-auto">
@@ -136,26 +168,7 @@ export default function Home() {
       <section className="border-y border-zinc-200 bg-white/50 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/50 py-16">
         <Container>
           <div className="flex gap-6 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:gap-12 md:overflow-visible md:pb-0">
-            {[
-              {
-                icon: <TruckIcon />,
-                title: t("home.features.fastDelivery.title"),
-                desc: t("home.features.fastDelivery.desc"),
-                color: "bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400",
-              },
-              {
-                icon: <ShieldCheckIcon />,
-                title: t("home.features.cod.title"),
-                desc: t("home.features.cod.desc"),
-                color: "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400",
-              },
-              {
-                icon: <HeadsetIcon />,
-                title: t("home.features.support.title"),
-                desc: t("home.features.support.desc"),
-                color: "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400",
-              },
-            ].map((feature, i) => (
+            {features.map((feature, i) => (
               <div
                 key={i}
                 className="flex min-w-[240px] shrink-0 flex-col items-center text-center group md:min-w-0"

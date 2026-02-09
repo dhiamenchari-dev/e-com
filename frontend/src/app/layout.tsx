@@ -53,7 +53,7 @@ export default function RootLayout({
                         muted
                         loop
                         playsInline
-                        preload="auto"
+                        preload="metadata"
                       >
                         <source src="/fire.mp4.mp4" type="video/mp4" />
                         <source src="/fire.mp4" type="video/mp4" />

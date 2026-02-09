@@ -11,7 +11,12 @@ const ENV_API_URL = (process.env.NEXT_PUBLIC_API_URL ?? "").trim();
 const DEV_FALLBACK_API_URL = "http://localhost:4000";
 
 export function getApiBaseUrl(): string {
-  if (ENV_API_URL) return ENV_API_URL.replace(/\/$/, "");
+  if (ENV_API_URL) {
+    const withProtocol = ENV_API_URL.includes("://")
+      ? ENV_API_URL
+      : `https://${ENV_API_URL}`;
+    return withProtocol.replace(/\/$/, "");
+  }
   if (process.env.NODE_ENV !== "production") return DEV_FALLBACK_API_URL;
   return "";
 }
