@@ -21,6 +21,10 @@
   "engines": {
     "node": "20.x"
   },
+  "dependencies": {
+    "express": "^5.2.1",
+    "next": "^16.1.6"
+  },
   "devDependencies": {
     "concurrently": "^9.2.1"
   }
